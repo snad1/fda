@@ -3,6 +3,7 @@ package com.snad.fdaproductauthenticscanner.ui.mainactivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import com.snad.fdaproductauthenticscanner.ui.complain.ComplainFragment
 import com.snad.fdaproductauthenticscanner.ui.product.ProductFragment
 import com.snad.fdaproductauthenticscanner.ui.scanner_history.ScannedHistoryFragment
 import com.snad.fdaproductauthenticscanner.ui.qrscanner.QRScannerFragment
@@ -27,6 +28,10 @@ class MainPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
                 ProductFragment.newInstance()
             }
 
+            3 -> {
+                ComplainFragment.newInstance()
+            }
+
             else -> {
                 QRScannerFragment()
             }
@@ -34,6 +39,6 @@ class MainPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
     }
 
     override fun getCount(): Int {
-        return 3
+        return 4
     }
 }

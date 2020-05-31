@@ -16,4 +16,9 @@
           android:icon="@drawable/ic_star_border_white_24dp"
     />
 
+    <item android:id="@+id/complainMenuId"
+          android:title="@string/com_header_text"
+          android:icon="@drawable/ic_textsms_black_24dp"
+    />
+
 </menu>

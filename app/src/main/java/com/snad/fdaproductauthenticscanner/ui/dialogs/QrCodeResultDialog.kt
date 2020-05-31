@@ -16,7 +16,9 @@ import com.snad.fdaproductauthenticscanner.db.DbHelperI
 import com.snad.fdaproductauthenticscanner.db.database.QrResultDataBase
 import com.snad.fdaproductauthenticscanner.db.entities.Product
 import com.snad.fdaproductauthenticscanner.db.entities.QrResult
+import com.snad.fdaproductauthenticscanner.utils.gone
 import com.snad.fdaproductauthenticscanner.utils.toFormattedDisplay
+import com.snad.fdaproductauthenticscanner.utils.visible
 import kotlinx.android.synthetic.main.layout_qr_result_show.*
 import java.lang.Exception
 
@@ -90,7 +92,14 @@ class QrCodeResultDialog(var context: Context) {
         dbHelperI.removeFromFavourite(qrResult?.id!!)
     }
 
-    fun show(recentQrResult: QrResult) {
+    fun show(recentQrResult: QrResult , b: Boolean) {
+        if (b){
+            dialog.complainText.visible()
+            dialog.dc.visible()
+        }else{
+            dialog.complainText.gone()
+            dialog.dc.gone()
+        }
         this.qrResult = recentQrResult
         dialog.scannedDate.text = qrResult?.calendar?.toFormattedDisplay()
         try {
@@ -99,7 +108,7 @@ class QrCodeResultDialog(var context: Context) {
             Log.w("showqr", e.message!! + " -- " + e.printStackTrace())
         }
         if (product != null){
-            dialog.scannedText.text = product!!.name
+            dialog.scannedText.text = product!!.name+ "\n" + product!!.expireDate
             dialog.authText.setTextColor(ContextCompat.getColor(context,R.color.lightColor))
             dialog.authText.text = context.getString(R.string.pro_auth)
             dialog.authIcon.setImageResource(R.drawable.ic_authentic)

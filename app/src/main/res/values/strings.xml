@@ -7,8 +7,12 @@
     <string name="about_app">About App</string>
     <string name="qr_code_scanner">QR Code Scanner</string>
     <string name="pro_auth_scanner">Product Authentic Scanner</string>
-    <string name="pro_auth">Product is Authentic</string>
-    <string name="pro_auth_not">Product is not Authentic</string>
+    <string name="pro_auth">Verified Product</string>
+    <string name="pro_auth_not">
+        Warning !!!
+This product has not been registered and is likely to be fake
+Do not Purchase
+    </string>
     <string name="by_snad">By Snad</string>
     <string name="recent_scanned_results">Recent Scanned Results</string>
     <string name="delete">Delete</string>
@@ -24,6 +28,7 @@
     </string>
     <string name="grant">Grant</string>
     <string name="pro_header_text">Products</string>
+    <string name="com_header_text">Complains</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

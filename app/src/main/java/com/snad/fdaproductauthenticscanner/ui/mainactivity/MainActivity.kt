@@ -37,6 +37,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.productsMenuId -> {
                     viewPager.currentItem = 2
                 }
+                R.id.complainMenuId -> {
+                    viewPager.currentItem = 3
+                }
             }
             return@setOnNavigationItemSelectedListener true
         }
@@ -55,6 +58,9 @@ class MainActivity : AppCompatActivity() {
                     }
                     2 -> {
                         bottomNavigationView.selectedItemId = R.id.productsMenuId
+                    }
+                    3 -> {
+                        bottomNavigationView.selectedItemId = R.id.complainMenuId
                     }
                 }
             }

@@ -87,7 +87,7 @@ class ScannedResultListAdapter(
 
         private fun onClicks(qrResult: QrResult, position: Int) {
             view.setOnClickListener {
-                resultDialog.show(qrResult)
+                resultDialog.show(qrResult, false)
             }
 
             view.setOnLongClickListener {

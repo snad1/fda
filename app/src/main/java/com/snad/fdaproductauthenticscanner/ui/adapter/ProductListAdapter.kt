@@ -23,13 +23,13 @@ class ProductListAdapter(
     var context: Context,
     private var listOfProduct: MutableList<Product>
 ) :
-    RecyclerView.Adapter<ProductListAdapter.ScannedResultListViewHolder>() {
+    RecyclerView.Adapter<ProductListAdapter.ProductListViewHolder>() {
 
     private var productDialog: ProductDialog =
         ProductDialog(context)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ScannedResultListViewHolder {
-        return ScannedResultListViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductListViewHolder {
+        return ProductListViewHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.layout_single_item_product,
                 parent,
@@ -42,11 +42,11 @@ class ProductListAdapter(
         return listOfProduct.size
     }
 
-    override fun onBindViewHolder(holder: ScannedResultListViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ProductListViewHolder, position: Int) {
         holder.bind(listOfProduct[position], position)
     }
 
-    inner class ScannedResultListViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
+    inner class ProductListViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
 
         fun bind(product: Product, position: Int) {
             view.namePro.text = product.name!!
