@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "817297138413",
+    "firebase_url": "https://snad-pro-aca0e.firebaseio.com",
+    "project_id": "snad-pro-aca0e",
+    "storage_bucket": "snad-pro-aca0e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:817297138413:android:5022a980dc947211a522e4",
+        "android_client_info": {
+          "package_name": "com.snad.fdaproductauthenticscanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "817297138413-7g0iuud8cp6ble6tgogk4s5rkeegiitq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.snad.fdaproductauthenticscanner",
+            "certificate_hash": "51c49dc103edcc89a52755e2835f743b6132c59f"
+          }
+        },
+        {
+          "client_id": "817297138413-dovmpfloqs8b4iead584dvj4nil1jljp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZAqKfP9EFHb2Pvxp0dAXizsFEI7A-iVE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "817297138413-dovmpfloqs8b4iead584dvj4nil1jljp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
