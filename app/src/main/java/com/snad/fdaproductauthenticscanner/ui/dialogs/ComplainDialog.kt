@@ -58,7 +58,7 @@ class ComplainDialog(var context: Context) {
 
     fun show(complain: Complain) {
         this.complain = complain
-//        dialog.comDate.text = complain!!.expireDate
+        dialog.comDate.text = complain.time
         dialog.comDetail.text = complain.detail
         dialog.show()
     }

@@ -78,8 +78,8 @@ class DbHelper(var qrResultDataBase: QrResultDataBase) : DbHelperI {
         return qrResultDataBase.getComDao().getAllComplains()
     }
 
-    override fun insertComplain(detail: String) {
-        qrResultDataBase.getComDao().insertComplain(Complain(detail= detail))
+    override fun insertComplain(complain: Complain) {
+        qrResultDataBase.getComDao().insertComplain(complain)
     }
 
     /*

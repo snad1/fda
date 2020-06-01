@@ -4,7 +4,7 @@ import android.app.Dialog
 import android.content.ClipData
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
+import android.telecom.Call
 import android.text.ClipboardManager
 import android.util.Log
 import android.widget.Toast
@@ -20,7 +20,9 @@ import com.snad.fdaproductauthenticscanner.utils.gone
 import com.snad.fdaproductauthenticscanner.utils.toFormattedDisplay
 import com.snad.fdaproductauthenticscanner.utils.visible
 import kotlinx.android.synthetic.main.layout_qr_result_show.*
-import java.lang.Exception
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class QrCodeResultDialog(var context: Context) {
@@ -31,6 +33,9 @@ class QrCodeResultDialog(var context: Context) {
 
     private var qrResult: QrResult? = null
     private var product: Product? = null
+    private var name: String? = null
+    private var time: String? = null
+    private var pId: Int? = null
 
     private var onDismissListener: OnDismissListener? = null
 
@@ -79,7 +84,17 @@ class QrCodeResultDialog(var context: Context) {
 
     private fun onClo(){
         dialog.dismiss()
-        onDismissListener?.onDismiss(dialog.complainText.text.toString())
+        val dateFormat = SimpleDateFormat("E, dd/MM/yyyy HH:mm:ss")
+//        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        try {
+            val date = Date()
+            val dateTime: String = dateFormat.format(date)
+//            println("Current Date Time : $dateTime")
+            time = dateTime
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        onDismissListener?.onDismiss(dialog.complainText.text.toString(), name, pId, time!!)
     }
 
     private fun addToFavourite() {
@@ -112,9 +127,13 @@ class QrCodeResultDialog(var context: Context) {
             dialog.authText.setTextColor(ContextCompat.getColor(context,R.color.lightColor))
             dialog.authText.text = context.getString(R.string.pro_auth)
             dialog.authIcon.setImageResource(R.drawable.ic_authentic)
+            name = product!!.name
+            pId = product!!.id
             product = null
         }
         else {
+            name = ""
+            pId = null
             dialog.scannedText.text = qrResult!!.result
             dialog.authText.setTextColor(ContextCompat.getColor(context,R.color.red))
             dialog.authText.text = context.getString(R.string.pro_auth_not)
@@ -146,6 +165,6 @@ class QrCodeResultDialog(var context: Context) {
     }
 
     interface OnDismissListener {
-        fun onDismiss(co: String)
+        fun onDismiss(detail: String, name: String?, pId: Int?, time: String)
     }
 }

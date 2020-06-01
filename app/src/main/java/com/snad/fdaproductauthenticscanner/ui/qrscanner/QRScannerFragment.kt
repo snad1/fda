@@ -1,13 +1,9 @@
 package com.snad.fdaproductauthenticscanner.ui.qrscanner
 
 
-import android.content.Context.LOCATION_SERVICE
 import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -26,12 +22,14 @@ import com.snad.fdaproductauthenticscanner.R
 import com.snad.fdaproductauthenticscanner.db.DbHelper
 import com.snad.fdaproductauthenticscanner.db.DbHelperI
 import com.snad.fdaproductauthenticscanner.db.database.QrResultDataBase
+import com.snad.fdaproductauthenticscanner.db.entities.Complain
 import com.snad.fdaproductauthenticscanner.ui.dialogs.QrCodeResultDialog
 import kotlinx.android.synthetic.main.fragment_qrscanner.view.*
 import kotlinx.android.synthetic.main.fragment_qrscanner1.view.*
 import me.dm7.barcodescanner.zbar.Result
 import me.dm7.barcodescanner.zbar.ZBarScannerView
 
+//class QRScannerFragment : Fragment(), ZBarScannerView.ResultHandler {
 class QRScannerFragment : Fragment() {
 
     companion object {
@@ -67,22 +65,133 @@ class QRScannerFragment : Fragment() {
     }
 
     private fun initViews() {
+//        initializeQRCamera()
         initializeQRCamera1()
         setResultDialog()
     }
 
+    /*private fun initializeQRCamera() {
+        scannerView = ZBarScannerView(context)
+        scannerView.setResultHandler(this)
+        scannerView.setBackgroundColor(ContextCompat.getColor(context!!, R.color.colorTranslucent))
+        scannerView.setBorderColor(ContextCompat.getColor(context!!, R.color.colorPrimaryDark))
+        scannerView.setLaserColor(ContextCompat.getColor(context!!, R.color.colorPrimaryDark))
+        scannerView.setBorderStrokeWidth(10)
+        scannerView.setSquareViewFinder(true)
+        scannerView.setupScanner()
+        scannerView.setAutoFocus(true)
+        startQRCamera()
+        mView.containerScanner.addView(scannerView)
+    }
+
+
     private fun setResultDialog() {
         resultDialog = QrCodeResultDialog(context!!)
         resultDialog.setOnDismissListener(object : QrCodeResultDialog.OnDismissListener {
-            override fun onDismiss(co: String) {
-//                resetPreview()
+            override fun onDismiss(detail: String, name: String?, pId: Int?, time: String) {
+                var lat = 0.0
+                var lng = 0.0
                 fusedLocationClient.lastLocation
                     .addOnSuccessListener { location : Location? ->
-                        // Got last known location. In some rare situations this can be null.
-                        Toast.makeText(context, "Your location: (${location?.latitude},${location?.longitude})", Toast.LENGTH_LONG).show()
+                        lat = location!!.latitude
+                        lng = location.longitude
+                        Toast.makeText(context, "Your location: (${location.latitude},${location.longitude})", Toast.LENGTH_LONG).show()
                     }
-                if (!TextUtils.isEmpty(co)){
-                    saveComplain(co)
+                if (!TextUtils.isEmpty(detail)){
+                    saveComplain(Complain(detail = detail, name = name, pId = pId, time = time, lat = lat, lng = lng))
+                }
+                resetPreview()
+            }
+        })
+    }
+
+
+    override fun handleResult(rawResult: Result?) {
+        onQrResult(rawResult?.contents)
+    }
+
+    private fun onQrResult(contents: String?) {
+        if (contents.isNullOrEmpty())
+            showToast("Empty Qr Result")
+        else
+            saveToDataBase(contents)
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(context!!, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun saveToDataBase(contents: String) {
+        val insertedResultId = dbHelperI.insertQRResult(contents)
+        val qrResult = dbHelperI.getQRResult(insertedResultId)
+        resultDialog.show(qrResult, true)
+    }
+
+    private fun saveComplain(complain: Complain) {
+        dbHelperI.insertComplain(complain)
+    }
+
+    private fun startQRCamera() {
+        scannerView.startCamera()
+    }
+
+    private fun resetPreview() {
+        scannerView.stopCamera()
+        scannerView.startCamera()
+        scannerView.stopCameraPreview()
+        scannerView.resumeCameraPreview(this)
+    }
+
+    private fun onClicks() {
+        mView.flashToggle.setOnClickListener {
+            if (mView.flashToggle.isSelected) {
+                offFlashLight()
+            } else {
+                onFlashLight()
+            }
+        }
+    }
+
+    private fun onFlashLight() {
+        mView.flashToggle.isSelected = true
+        scannerView.flash = true
+    }
+
+    private fun offFlashLight() {
+        mView.flashToggle.isSelected = false
+        scannerView.flash = false
+    }
+
+    override fun onResume() {
+        super.onResume()
+        scannerView.setResultHandler(this)
+        scannerView.startCamera()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        scannerView.stopCamera()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        scannerView.stopCamera()
+    }*/
+
+    private fun setResultDialog() {
+        resultDialog = QrCodeResultDialog(context!!)
+        resultDialog.setOnDismissListener(object : QrCodeResultDialog.OnDismissListener {
+            override fun onDismiss(detail: String, name: String?, pId: Int?, time: String) {
+                var lat = 0.0
+                var lng = 0.0
+                fusedLocationClient.lastLocation
+                    .addOnSuccessListener { location : Location? ->
+                        lat = location!!.latitude
+                        lng = location.longitude
+                        Toast.makeText(context, "Your location: (${location.latitude},${location.longitude}, ${name})", Toast.LENGTH_LONG).show()
+                    }
+                if (!TextUtils.isEmpty(detail)){
+                    saveComplain(Complain(detail = detail, name = name, pId = pId, time = time, lat = lat, lng = lng))
                 }
             }
         })
@@ -105,8 +214,8 @@ class QRScannerFragment : Fragment() {
         resultDialog.show(qrResult, true)
     }
 
-    private fun saveComplain(contents: String) {
-        dbHelperI.insertComplain(contents)
+    private fun saveComplain(complain: Complain) {
+        dbHelperI.insertComplain(complain)
     }
 
 
@@ -119,7 +228,7 @@ class QRScannerFragment : Fragment() {
         codeScanner.formats = CodeScanner.ALL_FORMATS // list of type BarcodeFormat,
         // ex. listOf(BarcodeFormat.QR_CODE)
         codeScanner.autoFocusMode = AutoFocusMode.SAFE // or CONTINUOUS
-        codeScanner.scanMode = ScanMode.SINGLE // or CONTINUOUS or PREVIEW
+        codeScanner.scanMode = ScanMode.SINGLE // SINGLE or CONTINUOUS or PREVIEW
         codeScanner.isAutoFocusEnabled = true // Whether to enable auto focus or not
         codeScanner.isFlashEnabled = false // Whether to enable flash or not
 
@@ -142,78 +251,20 @@ class QRScannerFragment : Fragment() {
         }
     }
 
-    private fun startQRCamera1() {
-        scannerView.startCamera()
-    }
-
-    /*private fun onClicks() {
-        mView.flashToggle.setOnClickListener {
-            if (mView.flashToggle.isSelected) {
-                offFlashLight()
-            } else {
-                onFlashLight()
-            }
-        }
-    }
-
-    private fun onFlashLight() {
-        mView.flashToggle.isSelected = true
-        scannerView.flash = true
-    }*/
-
-    private fun offFlashLight() {
-        mView.flashToggle.isSelected = false
-        scannerView.flash = false
-    }
-
     override fun onResume() {
         super.onResume()
-        /*scannerView.setResultHandler(this)
-        scannerView.startCamera()*/
         codeScanner.startPreview()
     }
 
     override fun onPause() {
         super.onPause()
-//        scannerView.stopCamera()
         codeScanner.releaseResources()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-//        scannerView.stopCamera()
         codeScanner.stopPreview()
     }
 
-    /*fun getLocation() {
-
-        var locationManager = getSystemService(LOCATION_SERVICE) as LocationManager?
-
-        var locationListener = object : LocationListener {
-            override fun onLocationChanged(location: Location?) {
-                var latitute = location!!.latitude
-                var longitute = location!!.longitude
-
-                Log.i("test", "Latitute: $latitute ; Longitute: $longitute")
-
-            }
-
-            override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-            }
-
-            override fun onProviderEnabled(provider: String?) {
-            }
-
-            override fun onProviderDisabled(provider: String?) {
-            }
-
-        }
-
-        try {
-            locationManager!!.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener)
-        } catch (ex:SecurityException) {
-            Toast.makeText(context, "Fehler bei der Erfassung!", Toast.LENGTH_SHORT).show()
-        }
-    }*/
 
 }

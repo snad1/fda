@@ -47,18 +47,32 @@
             app:layout_constraintStart_toEndOf="@+id/imgCom"
             android:layout_marginStart="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/imgCom"
-            android:id="@+id/expireCom"
+            android:id="@+id/comDate"
         android:layout_marginLeft="16dp"
-        android:visibility="gone"
         />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/namePro"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:text="eee"
+        android:lines="1"
+        android:textColor="@android:color/black"
+        android:ellipsize="end"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@+id/comDate"
+        app:layout_constraintBottom_toBottomOf="@+id/comDate"
+        app:layout_constraintEnd_toEndOf="@+id/detailCom"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
 
     <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/aunthenticCom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_authentic"
-            app:layout_constraintTop_toTopOf="@+id/expireCom"
-            app:layout_constraintBottom_toBottomOf="@+id/expireCom"
+            app:layout_constraintTop_toTopOf="@+id/comDate"
+            app:layout_constraintBottom_toBottomOf="@+id/comDate"
             app:layout_constraintEnd_toEndOf="@+id/detailCom"
         android:visibility="gone"
         />

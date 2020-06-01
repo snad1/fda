@@ -7,7 +7,7 @@ import com.snad.fdaproductauthenticscanner.db.entities.Complain
 @Dao
 interface ComplainDao {
 
-    @Query("SELECT * FROM Complain")
+    @Query("SELECT * FROM Complain ORDER BY id DESC")
     fun getAllComplains(): List<Complain>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -40,5 +40,5 @@ interface DbHelperI {
 
     fun getAllComplains(): List<Complain>
 
-    fun insertComplain(detail: String)
+    fun insertComplain(complain: Complain)
 }

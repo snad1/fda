@@ -1,9 +1,11 @@
 package com.snad.fdaproductauthenticscanner.ui.adapter
 
 import android.content.Context
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.snad.fdaproductauthenticscanner.R
@@ -46,7 +48,15 @@ class ComplainListAdapter(
 
         fun bind(complain: Complain, position: Int) {
             view.detailCom.text = complain.detail
-//            view.expirePro.text = product.expireDate.toString()
+            view.comDate.text = complain.time
+            Toast.makeText(context, complain.name, Toast.LENGTH_SHORT).show()
+            if (!TextUtils.isEmpty(complain.name)){
+                view.namePro.text = complain.name
+                view.namePro.visible()
+            }
+            else {
+                view.namePro.gone()
+            }
             onClicks(complain, position)
         }
 
